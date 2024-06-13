@@ -1,6 +1,35 @@
-import React from 'react'
+import axios from 'axios'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const Signup = () => {
+    const[data,changedata]=useState(
+        {
+            "name":"",
+            "email":"",
+            "password":""
+        }
+    )
+    const inputHandler=(event)=>{
+        changedata({...data,[event.target.name]:event.target.value},[])
+    }
+    const readvalue=()=>{
+        console.log(data)
+        axios.post("http://localhost:8080/signup",data).then(
+            (response)=>{
+                console.log(response.data)
+                if (response.data.status=="success") {
+                    alert("successfully added")
+                } else {
+                    alert("error")
+                }
+            }
+        ).catch(
+            (error)=>{
+                console.log(error.message)
+            }
+        )
+    }
   return (
     <div>
         <div className="container">
@@ -9,18 +38,21 @@ const Signup = () => {
                     <div className="row g-3">
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                             <label htmlFor="" className="form-label">name</label>
-                            <input type="text" className="form-control" />
+                            <input type="text" className="form-control" name="name" value={data.name} onChange={inputHandler} />
                         </div>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                             <label htmlFor="" className="form-label">email</label>
-                            <input type="text" className="form-control" />
+                            <input type="text" className="form-control" name="email" value={data.email} onChange={inputHandler} />
                         </div>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
                             <label htmlFor="" className="form-label">password</label>
-                            <input type="text" className="form-control" />
+                            <input type="text" className="form-control" name="password" value={data.password} onChange={inputHandler} />
                         </div>
                         <div className="col col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 col-xxl-12">
-                           <button className="btn btn-success">signUp</button>
+                           <button className="btn btn-success" onClick={readvalue}>signUp</button>
+                        </div>
+                        <div>
+                        <Link class="nav-link" to="/">Login</Link>
                         </div>
                     </div>
                 </div>
